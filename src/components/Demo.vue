@@ -1,12 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useVirtualList } from '@vueuse/core'
+import { useVirtualList, useInfiniteScroll } from '@vueuse/core'
 
-const data = ref(Array.from(Array(50).keys(), () => 'Lorem ipsum'))
+const data = ref(Array.from(Array(50).keys(), () => 'Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum'))
 
 const { list, containerProps, wrapperProps } = useVirtualList(data, {
-  itemHeight: 96
+  itemHeight: 96,
+  itemWidth: 300,
 })
+
+useInfiniteScroll(
+  containerProps.ref,
+  () => {
+    data.value.push(...Array.from(Array(10).keys(), () => 'More lorem ipsum'))
+  },
+  { distance: 10 }
+)
 </script>
 
 <template>
